@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +34,8 @@ public class UserMealsUtil {
     {
         List<UserMealWithExceed> result = new ArrayList<>();
 
-
+        Map<LocalDate, Integer> map = mealList.stream()
+                .collect(Collectors.toMap(x -> x.getDateTime().toLocalDate(), x -> x.getCalories(), (old, newV) -> old + newV));
 
 
         return result;
