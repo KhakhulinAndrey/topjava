@@ -32,19 +32,28 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExceed> getFilteredWithExceededOnStreams(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay)
     {
-        List<UserMealWithExceed> result = new ArrayList<>();
-
+        //мапа для определения переедания калорий за каждый день
         Map<LocalDate, Integer> map = mealList.stream()
-                .collect(Collectors.toMap(x -> x.getDateTime().toLocalDate(), x -> x.getCalories(), (old, newV) -> old + newV));
+                .collect(Collectors.toMap(m -> m.getDateTime().toLocalDate(), UserMeal::getCalories, (old, newV) -> old + newV));
 
+
+        List<UserMealWithExceed> result = mealList.stream()
+                .filter(m -> m.getDateTime().toLocalTime().isAfter(startTime) && m.getDateTime().toLocalTime().isBefore(endTime))
+                .map(meal -> {
+                    boolean exceed = map.get(meal.getDateTime().toLocalDate()) > caloriesPerDay;
+                    UserMealWithExceed mealWithExceed = new UserMealWithExceed(meal.getDateTime(),
+                            meal.getDescription(), meal.getCalories(), exceed);
+                    return mealWithExceed;
+                })
+                .collect(Collectors.toList());
 
         return result;
     }
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        List<UserMealWithExceed> result = new ArrayList<>();
-        Map<LocalDate, Integer> map = new HashMap<>();
 
+        //мапа для определения переедания калорий за каждый день
+        Map<LocalDate, Integer> map = new HashMap<>();
         for (UserMeal meal : mealList)
         {
             LocalDate mealDate = meal.getDateTime().toLocalDate();
@@ -56,6 +65,7 @@ public class UserMealsUtil {
                 map.put(mealDate, cal);
         }
 
+        List<UserMealWithExceed> result = new ArrayList<>();
         for (UserMeal meal: mealList)
         {
             LocalDate mealDate = meal.getDateTime().toLocalDate();
