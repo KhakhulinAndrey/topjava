@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="ru.javawebinar.topjava.model.MealWithExceed" %><%--
+<%@ page import="ru.javawebinar.topjava.model.MealWithExceed" %>
+<%--
   Created by IntelliJ IDEA.
   User: 1
   Date: 14.07.2017
@@ -8,6 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>Meals</title>
@@ -25,7 +27,6 @@
         color: red;
     }
 </style>
-<%--<jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealWithExceed"/>--%>
 
 
 <table>
@@ -33,25 +34,25 @@
         <td>Description</td>
         <td>Time</td>
         <td>Calories</td>
+        <th colspan=2>Action</th>
     </tr>
 
+
+    <jsp:useBean id="meals" scope="request" type="java.util.List"/>
     <c:forEach items="${meals}" var="m">
 
-        <c:if test="${m.isExceed()}">
-            <tr class="red">
-        </c:if>
-        <c:if test="${!m.isExceed()}">
-            <tr class="green">
-        </c:if>
+        <tr class="${m.isExceed() ? 'red' : 'green'}"/>
 
-
-        <td>${m.getDescription()}</td>
-        <td>${m.getDateTime().toString().replace('T',' ')}</td>
-        <td>${m.getCalories()}</td>
+        <td>${m.description}</td>
+        <td>${m.getStrDateTime()}</td>
+        <td>${m.calories}</td>
+        <td><a href="?action=edit&mealId=<c:out value="${m.getId()}"/>">Update</a></td>
+        <td><a href="?action=delete&mealId=<c:out value="${m.getId()}"/>">Delete</a></td>
         </tr>
 
     </c:forEach>
 </table>
+<p><a href="?action=insert">Add Meal</a></p>
 
 </body>
 </html>

@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.util;
 
+import ru.javawebinar.topjava.dao.MemoryMealDAOImpl;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 
@@ -8,7 +9,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import static ru.javawebinar.topjava.dao.MemoryMealDAOImpl.db;
 
 public class MealsUtil {
     public static List<Meal> meals = Arrays.asList(
@@ -20,8 +24,12 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
     );
 
-    public static List<MealWithExceed> allMealsWithExceed = getFilteredWithExceeded(meals, LocalTime.MIN,
-            LocalTime.MAX, 2000);
+
+
+    public static List<MealWithExceed> allMealsWithExceed(List<Meal> meals){
+        return getFilteredWithExceeded(meals, LocalTime.MIN,
+                LocalTime.MAX, 2000);
+    }
 
     public static void main(String[] args) {
         List<MealWithExceed> mealsWithExceeded = getFilteredWithExceeded(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
@@ -58,6 +66,6 @@ public class MealsUtil {
     }
 
     public static MealWithExceed createWithExceed(Meal meal, boolean exceeded) {
-        return new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
+        return new MealWithExceed(meal.getId(),meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
     }
 }
