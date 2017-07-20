@@ -42,28 +42,28 @@ public class MealServlet extends HttpServlet {
         if (action == null) {
             req.setAttribute("meals", allMealsWithExceed(dao.getAll()));
             //resp.sendRedirect("meals.jsp");
-            forward = LIST_MEAL;
+
             log.debug("redirect to meals");
+            req.getRequestDispatcher("/meals.jsp").forward(req, resp);
         }
         else if (action.equalsIgnoreCase("delete")){
             int mealId = Integer.parseInt(req.getParameter("mealId"));
             dao.delete(mealId);
-            forward = LIST_MEAL;
-            req.setAttribute("meals", allMealsWithExceed(dao.getAll()));
+            resp.sendRedirect("meals");
         }
         else if (action.equalsIgnoreCase("edit")){
             forward = INSERT_OR_EDIT;
             int mealId = Integer.parseInt(req.getParameter("mealId"));
             Meal meal = dao.getById(mealId);
             req.setAttribute("meal", meal);
+            req.getRequestDispatcher("/meal.jsp").forward(req,resp);
         }
         else if (action.equalsIgnoreCase("insert")){
-            forward = INSERT_OR_EDIT;
+            req.getRequestDispatcher("/meal.jsp").forward(req, resp);
         }
 
 
-        RequestDispatcher view = req.getRequestDispatcher(forward);
-        view.forward(req, resp);
+
     }
 
     @Override
@@ -84,9 +84,7 @@ public class MealServlet extends HttpServlet {
             dao.update(meal);
         }
 
-        RequestDispatcher view = request.getRequestDispatcher(LIST_MEAL);
-        request.setAttribute("meals", allMealsWithExceed(dao.getAll()));
-        view.forward(request, response);
+        response.sendRedirect("meals");
 
     }
 }
