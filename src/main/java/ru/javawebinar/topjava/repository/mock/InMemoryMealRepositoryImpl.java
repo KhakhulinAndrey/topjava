@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.repository.mock;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
@@ -66,10 +67,9 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public List<Meal> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int userId) {
+    public List<Meal> getFiltered(LocalDate startDate, LocalDate endDate, int userId) {
         return repository.values().stream()
                 .filter(meal -> isBetween(meal.getDate(), startDate, endDate))
-                .filter(meal -> isBetween(meal.getTime(), startTime, endTime))
                 .collect(Collectors.toList());
     }
 }
