@@ -102,7 +102,7 @@ public class MealServiceTest {
 
     @Test
     public void testSave() throws Exception {
-        Meal newMeal = new Meal(null, USER_ID, LocalDateTime.MAX, "new eat", 400);
+        Meal newMeal = new Meal(null, LocalDateTime.MAX, "new eat", 400);
         Meal created = service.save(newMeal, USER_ID);
         newMeal.setId(created.getId());
         MATCHER.assertCollectionEquals(Arrays.asList(newMeal, MEAL_1, MEAL_2, MEAL_3), service.getAll(USER_ID));

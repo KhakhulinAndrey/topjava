@@ -18,11 +18,11 @@ public class MealTestData {
     public static final int MEAL5_ID = START_SEQ + 6;
 
 
-    public static final Meal MEAL_1 = new Meal(MEAL1_ID, USER_ID, LocalDateTime.parse("2017-08-13T22:24"), "BigMac", 500);
-    public static final Meal MEAL_2 = new Meal(MEAL2_ID, USER_ID, LocalDateTime.parse("2017-08-13T18:24"), "Wopper", 580);
-    public static final Meal MEAL_3 = new Meal(MEAL3_ID, USER_ID, LocalDateTime.parse("2017-08-13T15:24"), "Vodka", 220);
-    public static final Meal MEAL_4 = new Meal(MEAL4_ID, ADMIN_ID, LocalDateTime.parse("2017-08-13T11:24"), "Admin eat1", 888);
-    public static final Meal MEAL_5 = new Meal(MEAL5_ID, ADMIN_ID, LocalDateTime.parse("2017-08-13T10:24"), "Admin eat2", 777);
+    public static final Meal MEAL_1 = new Meal(MEAL1_ID, LocalDateTime.parse("2017-08-13T22:24"), "BigMac", 500);
+    public static final Meal MEAL_2 = new Meal(MEAL2_ID, LocalDateTime.parse("2017-08-13T18:24"), "Wopper", 580);
+    public static final Meal MEAL_3 = new Meal(MEAL3_ID, LocalDateTime.parse("2017-08-13T15:24"), "Vodka", 220);
+    public static final Meal MEAL_4 = new Meal(MEAL4_ID, LocalDateTime.parse("2017-08-13T11:24"), "Admin eat1", 888);
+    public static final Meal MEAL_5 = new Meal(MEAL5_ID, LocalDateTime.parse("2017-08-13T10:24"), "Admin eat2", 777);
 
 
 /*              (100000, '2017-08-13 22:24', 'BigMac', 500),
