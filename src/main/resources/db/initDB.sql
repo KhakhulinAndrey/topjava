@@ -32,5 +32,6 @@ CREATE TABLE meals
   date_time    TIMESTAMP,
   description VARCHAR,
   calories    INTEGER,
+  CONSTRAINT usermeal_datetime_idx UNIQUE (user_id, date_time),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
