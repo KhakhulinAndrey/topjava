@@ -57,6 +57,7 @@ public class MealServiceTest {
     public TestWatcher watcher = new TestWatcher() {
 
         LocalTime startTime;
+
         @Override
         protected void starting(Description description) {
             startTime = LocalTime.now();
@@ -68,14 +69,12 @@ public class MealServiceTest {
             log.info("TEST DURATION: " + testDuration.toMillis() + " MS");
             testDurationMap.put(name.getMethodName(), testDuration.toMillis());
         }
-
-
     };
 
     @AfterClass
-    public static void after()
-    {
-         testDurationMap.forEach((key, value) -> System.out.println(key + " " + value + " MS"));
+    public static void after() {
+
+        testDurationMap.forEach((key, value) -> System.out.println("TIME "+key + " " + value + " MS"));
     }
 
     @Autowired
