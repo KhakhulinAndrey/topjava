@@ -12,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
+import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -22,20 +23,10 @@ import java.util.Collections;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class UserServiceTest {
 
-    static {
-        // Only for postgres driver logging
-        // It uses java.util.logging and logged via jul-to-slf4j bridge
-        SLF4JBridgeHandler.install();
-    }
+@ActiveProfiles({Profiles.DATAJPA, Profiles.HSQL_DB})
+public class UserServiceTest extends AbstractServiceTest {
+
 
     @Autowired
     private UserService service;
@@ -63,6 +54,7 @@ public class UserServiceTest {
         service.delete(USER_ID);
         MATCHER.assertCollectionEquals(Collections.singletonList(ADMIN), service.getAll());
     }
+
 
     @Test(expected = NotFoundException.class)
     public void testNotFoundDelete() throws Exception {
@@ -99,5 +91,18 @@ public class UserServiceTest {
         updated.setCaloriesPerDay(330);
         service.update(updated);
         MATCHER.assertEquals(updated, service.get(USER_ID));
+    }
+
+    @Override
+    @Test
+    public void testUpdateNotFound() throws Exception {
+
+    }
+
+    @Override
+    @Test
+    public void testDeleteNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
+        service.delete(1);
     }
 }
