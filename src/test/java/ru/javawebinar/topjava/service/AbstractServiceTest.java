@@ -77,7 +77,5 @@ public abstract class AbstractServiceTest {
 
     public abstract void testUpdate()throws Exception;
 
-    public abstract void testUpdateNotFound()throws Exception;
-
     public abstract void testGetAll()throws Exception;
 }

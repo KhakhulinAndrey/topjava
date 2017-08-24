@@ -24,8 +24,7 @@ import java.util.Collections;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 
-@ActiveProfiles({Profiles.DATAJPA, Profiles.HSQL_DB})
-public class UserServiceTest extends AbstractServiceTest {
+public abstract class UserServiceTest extends AbstractServiceTest {
 
 
     @Autowired
@@ -93,11 +92,6 @@ public class UserServiceTest extends AbstractServiceTest {
         MATCHER.assertEquals(updated, service.get(USER_ID));
     }
 
-    @Override
-    @Test
-    public void testUpdateNotFound() throws Exception {
-
-    }
 
     @Override
     @Test
