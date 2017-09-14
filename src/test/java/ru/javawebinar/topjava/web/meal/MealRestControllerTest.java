@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.javawebinar.topjava.TestUtil;
+import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
@@ -12,6 +13,7 @@ import ru.javawebinar.topjava.web.json.JsonUtil;
 
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static java.time.LocalDateTime.of;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -47,7 +49,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testCreate() throws Exception {
-        Meal expected = new Meal(null, of(2016, Month.MAY, 30, 13, 0), "Обед", 1001);
+        Meal expected = getCreated();
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected))).andExpect(status().isCreated());
@@ -57,17 +59,28 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
         MATCHER.assertEquals(expected, returned);
         MATCHER.assertListEquals(Arrays.asList(expected, MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1),
-                mealService.getAll(MEAL1.getUser().getId()));
+                mealService.getAll(UserTestData.USER_ID));
     }
 
     @Test
-    public void delete() throws Exception {
+    public void testDelete() throws Exception {
+        mockMvc.perform(delete(REST_URL + MEAL1_ID))
+                .andDo(print())
+                .andExpect(status().isOk());
+        MATCHER.assertListEquals(Arrays.asList(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2),
+                mealService.getAll(UserTestData.USER_ID));
 
     }
 
     @Test
-    public void update() throws Exception {
+    public void testUpdate() throws Exception {
+        Meal updated = getUpdated();
+        mockMvc.perform(put(REST_URL + MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isOk());
 
+        MATCHER.assertEquals(updated, mealService.get(MEAL1_ID, UserTestData.USER_ID));
     }
 
     @Test
